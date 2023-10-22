@@ -1,0 +1,52 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 21,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "ninja-multi-vcpkg",
+            "displayName": "Ninja Multi-Config",
+            "description": "Configure with vcpkg toolchain and generate Ninja project files for all configurations",
+            "binaryDir": "${sourceDir}/builds/${presetName}",
+            "generator": "Ninja Multi-Config",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": {
+                    "type": "FILEPATH",
+                    "value": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+                },
+                "VCPKG_MANIFEST_DIR": {
+                    "type": "FILEPATH",
+                    "value": "${sourceDir}/windows"
+                }
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "ninja-vcpkg-debug",
+            "configurePreset": "ninja-multi-vcpkg",
+            "displayName": "Build (Debug)",
+            "description": "Build with Ninja/vcpkg (Debug)",
+            "configuration": "Debug"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "test-ninja-vcpkg",
+            "configurePreset": "ninja-multi-vcpkg",
+            "hidden": true
+        },
+        {
+            "name": "test-debug",
+            "description": "Test (Debug)",
+            "displayName": "Test (Debug)",
+            "configuration": "Debug",
+            "inherits": [
+                "test-ninja-vcpkg"
+            ]
+        }
+    ]
+}
